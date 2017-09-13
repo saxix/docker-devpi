@@ -1,7 +1,7 @@
 FROM python:3
 
 LABEL version='4.3.0'
-LABEL description='[Devpi](http://doc.devpi.net/) server.'
+LABEL description='Devpi server.'
 
 
 
