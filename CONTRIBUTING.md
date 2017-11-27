@@ -6,4 +6,5 @@ Make a release
 --------------
 
     $ bumpversion minor|major|patch
-    $ make release
+    $ git push --all
+    $ git push --tags

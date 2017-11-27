@@ -16,6 +16,7 @@ VOLUME /mnt
 EXPOSE 3141
 ADD VERSION /
 ADD src/entrypoint.sh /
-ADD src/upgrade.sh /upgrade
+ADD src/export.sh /upgrade
+ADD src/import.sh /upgrade
 
 CMD ["/entrypoint.sh"]
