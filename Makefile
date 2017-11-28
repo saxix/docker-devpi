@@ -9,10 +9,10 @@ clean:
 	-@docker rmi ${USER}/${IMAGE}:`cat VERSION`
 
 build:
-	docker build -t ${USER}/${IMAGE}:dev --force-rm --squash --rm  .
+	docker build -t ${USER}/${IMAGE} --force-rm --squash --rm  .
 
 run:
-	docker run -p 3141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}:dev
+	docker run -p 3141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}
 
 
 test: clean build
