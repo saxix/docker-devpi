@@ -1,7 +1,7 @@
 Devpi Dockerfile
 ================
 
-A simple docker container that runs [Devpi](http://doc.devpi.net/)
+A simple docker container that runs [Devpi](http://doc.devpi.net/) 
 
 Visit project page on the docker hub at: https://hub.docker.com/r/saxix/devpi/
 

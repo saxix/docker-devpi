@@ -12,18 +12,20 @@ build:
 run:
 	docker run -p 3141:3141 --rm -v ${DATADIR}:/mnt saxix/devpi:`cat VERSION`
 
+
 test: clean build
 	docker run -p 13141:3141 --rm -v ${DATADIR}:/mnt saxix/devpi:`cat VERSION`
 
-#
-#tag:
-#	echo `cat VERSION`
-#	docker tag saxix/devpi:latest saxix/devpi:`cat VERSION`
-#
-#release:
-#	docker push saxix/devpi:latest
-#	version=`cat VERSION` docker push saxix/devpi:${version}
-#
+
+tag: build
+	echo `cat VERSION`
+	docker tag saxix/devpi:latest saxix/devpi:`cat VERSION`
+
+
+release: tag
+	docker push saxix/devpi:latest
+	docker push saxix/devpi:`cat VERSION`
+
 
 docker-cleanup:
 	@if [ -n "$(docker ps -a -q)" ];then docker rm $(docker ps -a -q) -f;fi
