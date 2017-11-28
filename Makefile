@@ -9,24 +9,24 @@ clean:
 	-@docker rmi ${USER}/${IMAGE}:`cat VERSION`
 
 build:
-	docker build -t ${USER}/${IMAGE} --force-rm --squash --rm  .
+	docker build -t ${USER}/${IMAGE}:dev --force-rm --squash --rm  .
 
 run:
-	docker run -p 3141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}:`cat VERSION`
+	docker run -p 3141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}:dev
 
 
 test: clean build
-	docker run -p 13141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}:`cat VERSION`
+	docker run -p 13141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}
 
-
-tag: build
-	docker tag ${USER}/${IMAGE}:latest ${USER}/${IMAGE}:`cat VERSION`
-
-
-release: tag
-	docker push ${USER}/${IMAGE}:latest
-	docker push ${USER}/${IMAGE}:`cat VERSION`
-
+#
+#tag: build
+#	docker tag ${USER}/${IMAGE}:latest ${USER}/${IMAGE}:`cat VERSION`
+#
+#
+#release: tag
+#	docker push ${USER}/${IMAGE}:latest
+#	docker push ${USER}/${IMAGE}:`cat VERSION`
+#
 
 docker-cleanup:
 	@if [ -n "$(docker ps -a -q)" ];then docker rm $(docker ps -a -q) -f;fi
