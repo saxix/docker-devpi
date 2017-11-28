@@ -50,13 +50,14 @@ Devpi creates a user named `root` by default, its password can be set with
 
 To create a running container do:
 ```
-    $ docker run --detach \-p 3141:3141 --restart=always -v <DATA_DIR>:/mnt saxix/devpi
+    $ docker run --detach -p 3141:3141 --restart=always -v <DATA_DIR>:/mnt saxix/devpi
 ```
 
 ## Upgrade
 
-
+```
     $ docker run  -v <DATA_DIR>:/mnt -v <EXPORT_DIR>:/export saxix/devpi:<OLD_VERSION> export
+    
     $ docker run  -v <DATA_DIR>:/mnt -v <EXPORT_DIR>:/export saxix/devpi:lastest import
-
+```
 
