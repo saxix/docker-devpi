@@ -1,33 +1,31 @@
 DATADIR?=/data/devpi_index
 BACKUP?=/data/BACKUP
+USER=saxix
+IMAGE=devpi
 
 .PHONY: upgrade
 
 clean:
-	-@docker rm devpi
-	-@docker rmi saxix/devpi:`cat VERSION`
-	-@docker rmi saxix/devpi
+	-@docker rmi ${USER}/${IMAGE}:`cat VERSION`
 
 build:
-	docker build -t saxix/devpi:latest --force-rm --squash --rm  .
-
-create:
-	docker create --name devpi -p 3141:3141 -v ${DATADIR}:/mnt saxix/devpi
+	docker build -t ${USER}/${IMAGE} --force-rm --squash --rm  .
 
 run:
-	docker run -p 3141:3141 --rm -v ${DATADIR}:/mnt saxix/devpi
+	docker run -p 3141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}:`cat VERSION`
 
 
-test:
-	docker start --attach devpi
+test: clean build
+	docker run -p 13141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}:`cat VERSION`
 
-tag:
-	echo `cat VERSION`
-	docker tag saxix/devpi:latest saxix/devpi:`cat VERSION`
 
-release:
-	docker push saxix/devpi:latest
-	version=`cat VERSION` docker push saxix/devpi:${version}
+tag: build
+	docker tag ${USER}/${IMAGE}:latest ${USER}/${IMAGE}:`cat VERSION`
+
+
+release: tag
+	docker push ${USER}/${IMAGE}:latest
+	docker push ${USER}/${IMAGE}:`cat VERSION`
 
 
 docker-cleanup:
