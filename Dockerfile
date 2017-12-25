@@ -13,10 +13,10 @@ RUN apk add --update --no-cache bash ca-certificates python3 \
 RUN apk add --no-cache --virtual .build-deps \
     gcc python3-dev libffi-dev musl-dev bash \
     && pip install \
-        devpi-server==4.3.1 \
+        devpi-server==4.3.2 \
         devpi-client==3.1.0 \
         devpi-web==3.2.1 \
-        devpi-theme-16 \
+        devpi-theme-16==2.0 \
     && apk del .build-deps \
     && rm -r /root/.cache
 

@@ -7,8 +7,8 @@ Visit project page on the docker hub at: https://hub.docker.com/r/saxix/devpi/
 
 This container provides:
 
-- devpi-server==4.3.1
-- devpi-client==3.0.1
+- devpi-server==4.3.2
+- devpi-client==3.1.0
 - devpi-web==3.2.1
 - [devpi-theme-16](https://github.com/saxix/devpi-theme-16)
 
@@ -58,6 +58,6 @@ To create a running container do:
 ```
     $ docker run  -v <DATA_DIR>:/mnt -v <EXPORT_DIR>:/export saxix/devpi:<OLD_VERSION> export
     
-    $ docker run  -v <DATA_DIR>:/mnt -v <EXPORT_DIR>:/export saxix/devpi:lastest import
+    $ docker run  -v <DATA_DIR>:/mnt -v <EXPORT_DIR>:/export saxix/devpi:latest import
 ```
 
