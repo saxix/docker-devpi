@@ -9,14 +9,11 @@ RUN apk add --update --no-cache bash ca-certificates python3 \
     && pip3 install --upgrade pip setuptools \
     && update-ca-certificates \
     && rm -r /root/.cache
+ADD src/requirements.pip /
 
 RUN apk add --no-cache --virtual .build-deps \
     gcc python3-dev libffi-dev musl-dev bash \
-    && pip install \
-        devpi-server==4.3.2 \
-        devpi-client==3.1.0 \
-        devpi-web==3.2.1 \
-        devpi-theme-16==2.0 \
+    && pip install -r /requirements.pip \
     && apk del .build-deps \
     && rm -r /root/.cache
 

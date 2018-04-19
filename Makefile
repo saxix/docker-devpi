@@ -1,4 +1,4 @@
-DATADIR?=/data/devpi_index
+DATADIR?=/data/storage/devpi_test_dir
 BACKUP?=/data/BACKUP
 USER=saxix
 IMAGE=devpi
@@ -6,8 +6,8 @@ IMAGE=devpi
 .PHONY: upgrade
 
 clean:
-	-@docker rmi ${USER}/${IMAGE}:latest
-	-@docker rmi ${USER}/${IMAGE}:`cat VERSION`
+	-@docker rmi -f ${USER}/${IMAGE}:latest
+	-@docker rmi -f ${USER}/${IMAGE}:`cat VERSION`
 
 build:
 	docker build -t ${USER}/${IMAGE}:dev --force-rm --squash --rm  .
