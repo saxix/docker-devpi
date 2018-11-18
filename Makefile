@@ -1,41 +1,53 @@
-DATADIR?=/data/storage/devpi_test_dir
+VERSION?=`cat VERSION`
+DEVELOP?=1
 BACKUP?=/data/BACKUP
 USER=saxix
 IMAGE=devpi
+DOCKER_IMAGE=${USER}/${IMAGE}:${VERSION}
 
 .PHONY: upgrade
 
 clean:
-	-@docker rmi -f ${USER}/${IMAGE}:latest
-	-@docker rmi -f ${USER}/${IMAGE}:`cat VERSION`
+	rm -fr ~build
+	rm _Dockerfile
 
 build:
-	docker build -t ${USER}/${IMAGE}:dev --force-rm --squash --rm  .
+	docker build \
+		--build-arg DEVELOP=${DEVELOP} \
+		--build-arg VERSION=${VERSION} \
+		--force-rm \
+		--squash \
+		--rm  \
+		-t ${USER}/${IMAGE}:${VERSION} \
+		.
+	docker images | grep ${USER}/${IMAGE}
+
+.run:
+	docker run \
+	 		--rm \
+			-p 3141:3141 \
+			-v /data/storage/devpi/index:/data \
+			-v $$PWD/~build/export:/export \
+			${RUN_OPTIONS} \
+			-t ${DOCKER_IMAGE} \
+			${CMD}
 
 run:
-	docker run -p 3141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}:dev
+	RUN_OPTIONS="-it" $(MAKE) .run
 
+shell:
+	RUN_OPTIONS="-it" CMD="/bin/sh" $(MAKE) .run
 
 test: clean build
 	docker run -p 13141:3141 --rm -v ${DATADIR}:/mnt ${USER}/${IMAGE}:dev
 
-
-tag:
-	docker build -t ${USER}/${IMAGE}:latest --force-rm --squash --rm  .
-	docker tag ${USER}/${IMAGE}:latest ${USER}/${IMAGE}:`cat VERSION`
-
-
-release: tag
+release:
+	pass docker/saxix | docker login -u saxix --password-stdin
+	docker push ${USER}/${IMAGE}:${VERSION}
 	docker push ${USER}/${IMAGE}:latest
-	docker push ${USER}/${IMAGE}:`cat VERSION`
 
-
-docker-cleanup:
-	@if [ -n "$(docker ps -a -q)" ];then docker rm $(docker ps -a -q) -f;fi
-	@# 1. Make sure that exited containers are deleted.
-	-@docker rm -v `docker ps -a -q -f status=exited` 2>/dev/null
-	@# 2. Remove unwanted ‘dangling’ images.
-	-@docker rmi `docker images -f "dangling=true" -q`  2>/dev/null
-	@# 3. Clean ‘vfs’ directory?
-	-@docker volume rm `docker volume ls -qf dangling=true`  2>/dev/null
+local:
+	DEVPISERVER_PORT=8000 \
+	DEVPISERVER_SERVERDIR=./~build/data \
+		devpi-server
 

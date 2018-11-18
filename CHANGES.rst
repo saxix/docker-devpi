@@ -1,3 +1,7 @@
+2.3
+===
+* upgrade to devpi-server==4.8.0, devpi-web==3.5.0, devpi-client==4.2.0, devpi-theme-16==2.1
+
 2.2
 ===
 * upgrade to devpi-server==4.4.0, devpi-web==3.2.2, devpi-client==4.0.1, devpi-theme-16==2.1

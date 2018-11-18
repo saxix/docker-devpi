@@ -7,9 +7,9 @@ Visit project page on the docker hub at: https://hub.docker.com/r/saxix/devpi/
 
 This container provides:
 
-- devpi-server==4.4.0
-- devpi-client==4.0.1
-- devpi-web==3.2.2
+- devpi-server==4.8.0
+- devpi-client==4.2.0
+- devpi-web==3.5.0
 - [devpi-theme-16]==2.1(https://github.com/saxix/devpi-theme-16)
 
 ## Getting the image
@@ -42,7 +42,13 @@ docker build -t saxix/devpi .
 Devpi creates a user named `root` by default, its password can be set with
 `DEVPI_PASSWORD` environment variable.
 
-* -e DEVPI_PASSWORD=<PASSWORD> 
+ - -e DEVPI_PASSWORD=<password>
+ 
+Other variables are:
+
+ - DEVPISERVER_SERVERDIR
+ - DEVPISERVER_HOST
+ - DEVPISERVER_PORT 
 
 
 ## Run
@@ -56,8 +62,8 @@ To create a running container do:
 ## Upgrade
 
 ```
-    $ docker run --rm -v <DATA_DIR>:/mnt -v <EXPORT_DIR>:/export saxix/devpi:<OLD_VERSION> /export.sh
+    $ docker run --rm -v <DATA_DIR>:/data -v <EXPORT_DIR>:/export saxix/devpi:<OLD_VERSION> export
     
-    $ docker run --rm -v <DATA_DIR>:/mnt -v <EXPORT_DIR>:/export saxix/devpi:latest /import.sh
+    $ docker run --rm -v <DATA_DIR>:/data -v <EXPORT_DIR>:/export saxix/devpi:latest import
 ```
 
